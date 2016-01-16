@@ -10,15 +10,17 @@ TASK_STRING     = 'task_'
 LEN_TASK_STRING = len(TASK_STRING)
 
 class MakeItLoader(TaskLoader):
+    doitcfg = { 'depfile': '.makeitdb' }
     def __init__(self, cfg={}):
         self.cfg        = cfg
         self._injections = {}
     def load_tasks(self, cmd, opt_values, pos_args):
         makeitcfg = self.cfg.get('makeit')
-        mods      = []
         if not makeitcfg:
             raise RuntimeError('Configuration must have a [makeit] section')
+        mods      = []
         modpath   = makeitcfg.get('path').split(':')
+        self.doitcfg.update(self.cfg.get('doit', {}))
         #  Find absolute paths to task modules
         loadpaths = self._search_module_paths(modpath)
         #  Load task generators from modules
@@ -30,7 +32,7 @@ class MakeItLoader(TaskLoader):
         #  Process makeit extensions out of task dicts
         processed = self._process_makeit_extensions(taskdicts)
         #  Generate Task objects from processed tasks
-        return self._processed_dicts_to_tasks(processed)
+        return self._processed_dicts_to_tasks(processed), self.doitcfg
     def _search_module_paths(self, paths):
         '''Takes an iterable of director paths
         Searches each directory for python modules
