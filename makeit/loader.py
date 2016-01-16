@@ -16,7 +16,7 @@ class MakeItLoader(TaskLoader):
         self._injections = {}
     def load_tasks(self, cmd, opt_values, pos_args):
         makeitcfg = self.cfg.get('makeit')
-        if not makeitcfg:
+        if not hasattr(makeitcfg, 'get'):
             raise RuntimeError('Configuration must have a [makeit] section')
         mods      = []
         modpath   = makeitcfg.get('path').split(':')
