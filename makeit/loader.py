@@ -77,6 +77,7 @@ class MakeItLoader(TaskLoader):
                         task['basename'] = taskname
                     dicts.append(task)
             else:                           # Assume task dict
+                task = output
                 if not task.has_key('basename'):
                     task['basename'] = taskname
                 dicts.append(task)

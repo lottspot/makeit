@@ -56,3 +56,20 @@ class TestCollectTaskgens(TestCase):
             self.assertTrue(callable(taskgens.get(name)))
         for name in expect_missing:
             self.assertIsNone(taskgens.get(name))
+
+class TestTaskgensToDicts(TestCase):
+    def setUp(self):
+        self.loader = MakeItLoader({'makeit': {}})
+    def test_generator_received_config(self):
+        generators = {
+            'mytaskgen': lambda cfg: {'found_cfg': True} if cfg.has_key('makeit') else {}
+        }
+        dicts = self.loader._taskgens_to_dicts(generators)
+        for task in dicts:
+            self.assertTrue(task.get('found_cfg'))
+    def test_basename_is_set(self):
+        generators = {
+            'betrue': lambda: {'actions': ['/bin/true']}
+        }
+        dicts = self.loader._taskgens_to_dicts(generators)
+        self.assertEqual('betrue', dicts[0].get('basename'))
