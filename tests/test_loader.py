@@ -73,3 +73,31 @@ class TestTaskgensToDicts(TestCase):
         }
         dicts = self.loader._taskgens_to_dicts(generators)
         self.assertEqual('betrue', dicts[0].get('basename'))
+
+class TestProcessMakeitExtensions(TestCase):
+    def setUp(self):
+        self.loader = MakeItLoader({'makeit': {}})
+        self.tasks = [
+            {
+                'basename': 'second',
+                'actions': ['/bin/true']
+            },
+            {
+                'basename': 'first',
+                'actions': ['/bin/false'],
+                'task_before': 'second'
+            }
+        ]
+        self.processed = self.loader._process_makeit_extensions(self.tasks)
+    def test_dependency_was_injected(self):
+        found_taskdep = False
+        for task in self.processed:
+            for dep in task.get('task_dep', []):
+              if dep == 'first':
+                  found_taskdep = True
+        self.assertTrue(found_taskdep)
+    def test_makeit_extensions_stripped(self):
+        makeit_exts = ['task_before']
+        for task in self.processed:
+            for attr in task.keys():
+                self.assertFalse(attr in makeit_exts, 'Found makeit extension (one of %s) in task: %s' % (makeit_exts, task))

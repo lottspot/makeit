@@ -92,7 +92,7 @@ class MakeItLoader(TaskLoader):
             task = self._makeit_ext_depinject_parse(task)
             stripped.append(task)
         #  Process extensions
-        for task in dicts:
+        for task in stripped:
             self._makeit_ext_depinject_do(task)
         return stripped
     def _processed_dicts_to_tasks(self, dicts):
