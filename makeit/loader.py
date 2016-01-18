@@ -59,8 +59,8 @@ class MakeItLoader(TaskLoader):
                     taskgens[taskname] = val
         return taskgens
     def _taskgens_to_dicts(self, generators):
-        '''Takes an iterable of task generation methods
-        Generates tasks, storing each one in a dictionary
+        '''Takes a {'taskname': callable } dictionary of task generation methods
+        Generates tasks, storing each one in a separate dictionary
         Returns a list of task dictionaries which include makeit extended attributes
         Guarantees that every task will have its 'basename' value set
         '''
