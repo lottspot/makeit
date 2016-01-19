@@ -58,6 +58,7 @@ class TestCollectTaskgens(TestCase):
         for name in expect_missing:
             self.assertIsNone(taskgens.get(name))
 
+# TODO: Test the generator object path (loader.py, 75-78)
 class TestTaskgensToDicts(TestCase):
     def setUp(self):
         self.loader = MakeItLoader({'makeit': {}})
