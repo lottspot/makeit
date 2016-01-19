@@ -78,8 +78,8 @@ class MakeItLoader(TaskLoader):
                     dicts.append(task)
             else:                           # Assume task dict
                 task = output
-                if not task.has_key('basename'):
-                    task['basename'] = taskname
+                if not task.has_key('name'):
+                    task['name'] = taskname
                 dicts.append(task)
         return dicts
     def _process_makeit_extensions(self, dicts):
@@ -113,15 +113,15 @@ class MakeItLoader(TaskLoader):
                 inject_to = task[INJECT_STRING]
                 injections = self._injections
                 if injections.has_key(inject_to):
-                    injections[inject_to].append(task['basename'])
+                    injections[inject_to].append(task['name'])
                 else:
-                    injections[inject_to] = [task['basename']]
+                    injections[inject_to] = [task['name']]
             else:
                 stripped[key] = task[key]
         return stripped
     def _makeit_ext_depinject_do(self, task):
         '''Inject task_deps to this task which were specified by other tasks'''
-        injected_deps = self._injections.get(task['basename'], [])
+        injected_deps = self._injections.get(task['name'], [])
         if task.has_key('task_dep'):  # task_dep already defined
             task['task_dep'].extend(injected_deps)
         elif len(injected_deps) > 0:  # task_dep not defined, but there are task_dep tasks to add

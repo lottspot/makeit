@@ -73,18 +73,22 @@ class TestTaskgensToDicts(TestCase):
             'betrue': lambda: {'actions': ['/bin/true']}
         }
         dicts = self.loader._taskgens_to_dicts(generators)
-        self.assertEqual('betrue', dicts[0].get('basename'))
+        task  = dicts[0]
+        name  = task.get('name')
+        if name is None:
+            name = task.get('basename')
+        self.assertEqual('betrue', name)
 
 class TestProcessMakeitExtensions(TestCase):
     def setUp(self):
         self.loader = MakeItLoader({'makeit': {}})
         self.tasks = [
             {
-                'basename': 'second',
+                'name': 'second',
                 'actions': ['/bin/true']
             },
             {
-                'basename': 'first',
+                'name': 'first',
                 'actions': ['/bin/false'],
                 'task_before': 'second'
             }
