@@ -3,6 +3,7 @@ from unittest import TestCase
 from tempfile import mkdtemp
 from shutil   import rmtree
 from makeit.loader import MakeItLoader
+from doit.task import Task
 
 class TestPathSearch(TestCase):
     '''MakeItLoader._search_module_paths
@@ -101,3 +102,17 @@ class TestProcessMakeitExtensions(TestCase):
         for task in self.processed:
             for attr in task.keys():
                 self.assertFalse(attr in makeit_exts, 'Found makeit extension (one of %s) in task: %s' % (makeit_exts, task))
+
+class TestProcessedDictsToTasks(TestCase):
+    def setUp(self):
+        self.loader = MakeItLoader({'makeit': {}})
+        self.dicts  = [
+            {'name': 'first',  'actions': []},
+            {'name': 'second', 'actions': []}
+        ]
+        self.tasks  = self.loader._processed_dicts_to_tasks(self.dicts)
+    def test_task_objects_created(self):
+        for task in self.tasks:
+            self.assertTrue(isinstance(task, Task))
+    def test_got_tuple(self):
+        self.assertTrue(isinstance(self.tasks, tuple))
