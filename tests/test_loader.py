@@ -58,7 +58,6 @@ class TestCollectTaskgens(TestCase):
         for name in expect_missing:
             self.assertIsNone(taskgens.get(name))
 
-# TODO: Test the generator object path (loader.py, 75-78)
 class TestTaskgensToDicts(TestCase):
     def setUp(self):
         self.loader = MakeItLoader({'makeit': {}})
@@ -79,6 +78,19 @@ class TestTaskgensToDicts(TestCase):
         if name is None:
             name = task.get('basename')
         self.assertEqual('betrue', name)
+    def test_generator_basename_is_set(self):
+        def yield_many():
+            for i in range(3):
+                yield {'actions': ['/bin/true']}
+        generators = {
+            'manytruths' : yield_many
+        }
+        dicts = self.loader._taskgens_to_dicts(generators)
+        for task in dicts:
+            name = task.get('name')
+            if name is None:
+                name = task.get('basename')
+            self.assertEqual('manytruths', name)
 
 class TestProcessMakeitExtensions(TestCase):
     def setUp(self):

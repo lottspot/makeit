@@ -12,7 +12,7 @@ LEN_TASK_STRING = len(TASK_STRING)
 class MakeItLoader(TaskLoader):
     doitcfg = { 'depfile': '.makeitdb' }
     def __init__(self, cfg={}):
-        self.cfg        = cfg
+        self.cfg         = cfg
         self._injections = {}
     def load_tasks(self, cmd, opt_values, pos_args):
         makeitcfg = self.cfg.get('makeit')
