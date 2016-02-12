@@ -73,11 +73,15 @@ class MakeItLoader(TaskLoader):
                 output = generator()
             if hasattr(output, 'next'):     # Generator object
                 for task in output:
+                    if not hasattr(task, 'has_key'):
+                        raise TypeError('Task %s yielded a non-dictionary type' % generator.__name__)
                     if not task.has_key('basename'):
                         task['basename'] = taskname
                     dicts.append(task)
             else:                           # Assume task dict
                 task = output
+                if not hasattr(task, 'has_key'):
+                    raise TypeError('Task %s returned a non-dictionary type' % generator.__name__)
                 if not task.has_key('name'):
                     task['name'] = taskname
                 dicts.append(task)
