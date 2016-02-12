@@ -44,5 +44,8 @@ setup(
     test_suite='tests',
     cmdclass={
         'coverage': Coverage,
+    },
+    entry_points={
+        'console_scripts': ['makeit = makeit.__main__:main']
     }
 )
