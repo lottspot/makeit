@@ -11,9 +11,12 @@ def cfg_to_dict(cfg):
         d[section] = dict(cfg[section])
     return d
 
-if __name__ == '__main__':
+def main():
     cfg = SafeConfigParser()
     if makeit_cfg not in cfg.read(makeit_cfg):
         sys.exit('Failed to load %s' % makeit_cfg)
     as_dict = cfg_to_dict(cfg)
     sys.exit(DoitMain(MakeItLoader(as_dict)).run(sys.argv[1:]))
+
+if __name__ == '__main__':
+    main()
