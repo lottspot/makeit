@@ -33,7 +33,7 @@ class Coverage(Command):
 
 setup(
     name='makeit',
-    version='0.0',
+    version='0.1',
     description='A reimagined task loader for doit',
     author='James Lott',
     author_email='james@lottspot.com',
